@@ -38,6 +38,8 @@ Set-ExecutionPolicy RemoteSigned -Force
 ```powershell
 .\install-adds.ps1
 ```
+  🔔 NOTE: If the system reboots after renaming, just re-run the same script again.It will automatically skip the rename step and proceed with AD DS installation.
+
 
 ### 2. After Domain Promotion
 ```powershell
