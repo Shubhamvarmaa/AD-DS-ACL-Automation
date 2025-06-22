@@ -48,3 +48,35 @@ Set-ExecutionPolicy RemoteSigned -Force
 .\Configure-AD-ACLs.ps1
 ```
 ---
+
+## 🛠️ Requirements
+
+- 🪟 Windows Server 2016  
+- 💻 PowerShell (Run as Administrator)  
+- 📦 ActiveDirectory module (auto-installed with AD DS role)  
+
+---
+
+## 📎 Notes
+
+- ⚠️ Ensure `Password@123` meets your domain's password policy  
+- ✅ Idempotent: Safe to re-run without creating duplicate users  
+- 🔒 Uses `System.DirectoryServices` for ACL operations  
+
+---
+
+## 📷 Preview
+
+Permissions like `GenericWrite`, `AddSelf`, and `AllExtendedRights` are especially useful for:
+
+- 🔬 Active Directory Labs  
+- 🧪 Post-exploitation scenarios  
+- 🔐 Red Team / Blue Team training  
+
+---
+
+## 👨‍💻 Author
+
+Made with 💻 and 🧠 by **[Shubham](https://github.com/Shubhamvarmaa)**  
+Feel free to ⭐ the repo or open an issue if you find this useful!
+
