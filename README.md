@@ -18,13 +18,13 @@ This project automates the installation and configuration of **Active Directory 
 - **Domain Name**: `armour.local`
 - **Users Created**: 13 AD users (rahul, sandeep, jainam, etc.)
 - **Custom ACLs Applied**:
-  - `WriteOwner` ➡️ rahul on Domain Admins
-  - `GenericWrite` ➡️ aakash on Domain Admins
-  - `AddSelf` ➡️ aakash and himanshu
-  - `GenericAll` ➡️ ram on the domain root
+  - `WriteOwner` ➡️ Rahul on Domain Admins
+  - `GenericWrite` ➡️ Aakash on Domain Admins
+  - `AddSelf` ➡️ Himanshu on Domain Admins
+  - `GenericAll` ➡️ Ram on the domain root
   - `ForceChangePassword` ➡️ Nobita and raj on Shizuka
-  - `GenericWrite` ➡️ kisan on sonu
-  - `WriteDacl` ➡️ jainam on sandeep
+  - `GenericWrite` ➡️ Kisan on sonu
+  - `WriteDacl` ➡️ Jainam on sandeep
 
 ---
 
