@@ -5,19 +5,19 @@ Import-Module ActiveDirectory
 # -------------------------
 
 $users = @(
-    @{Name="rahul";    Password="Pass@123"},
-    @{Name="sandeep";  Password="Pass@1234"},
-    @{Name="jainam";   Password="Pass@12345"},
+    @{Name="rahul";    Password="Password@123"},
+    @{Name="sandeep";  Password="Password@123"},
+    @{Name="jainam";   Password="Password@123"},
     @{Name="aakash";   Password="Password@123"},
-    @{Name="himanshu"; Password="Password@1234"},
-    @{Name="ram";      Password="Password@12345"},
-    @{Name="Shizuka";  Password="Password@1"},
-    @{Name="Nobita";   Password="Password@12"},
-    @{Name="doraemon"; Password="armour@123"},
-    @{Name="Suneo";    Password="armour@1234"},
-    @{Name="sonu";     Password="Pass@123"},
-    @{Name="kisan";    Password="Pass@1234"},
-    @{Name="raj";      Password="Pass@1235"}
+    @{Name="himanshu"; Password="Password@123"},
+    @{Name="ram";      Password="Password@123"},
+    @{Name="Shizuka";  Password="Password@123"},
+    @{Name="Nobita";   Password="Password@121"},
+    @{Name="doraemon"; Password="Password@123"},
+    @{Name="Suneo";    Password="Password@123"},
+    @{Name="sonu";     Password="Password@123"},
+    @{Name="kisan";    Password="Password@123"},
+    @{Name="raj";      Password="Password@123"}
 )
 
 foreach ($user in $users) {
