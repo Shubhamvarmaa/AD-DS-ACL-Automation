@@ -1,22 +1,23 @@
 Import-Module ActiveDirectory
 
-# -------------------------------
+# -------------------------
 # Step 1: Create Users
-# -------------------------------
+# -------------------------
+
 $users = @(
-    @{Name="rahul"; Password="Pass@123"},
-    @{Name="sandeep"; Password="Pass@123"},
-    @{Name="jainam"; Password="Pass@123"},
-    @{Name="aakash"; Password="Password@123"},
-    @{Name="himanshu"; Password="Password@123"},
-    @{Name="ram"; Password="Password@12345"},
-    @{Name="Shizuka"; Password="Password@1"},
-    @{Name="Nobita"; Password="Password@1"},
+    @{Name="rahul";    Password="Pass@123"},
+    @{Name="sandeep";  Password="Pass@1234"},
+    @{Name="jainam";   Password="Pass@12345"},
+    @{Name="aakash";   Password="Password@123"},
+    @{Name="himanshu"; Password="Password@1234"},
+    @{Name="ram";      Password="Password@12345"},
+    @{Name="Shizuka";  Password="Password@1"},
+    @{Name="Nobita";   Password="Password@12"},
     @{Name="doraemon"; Password="armour@123"},
-    @{Name="Suneo"; Password="armour@123"},
-    @{Name="sonu"; Password="Pass@123"},
-    @{Name="kisan"; Password="Pass@123"},
-    @{Name="raj"; Password="Pass@123"}
+    @{Name="Suneo";    Password="armour@1234"},
+    @{Name="sonu";     Password="Pass@123"},
+    @{Name="kisan";    Password="Pass@1234"},
+    @{Name="raj";      Password="Pass@1235"}
 )
 
 foreach ($user in $users) {
@@ -92,7 +93,6 @@ function Grant-ForceChangePassword {
         [string]$TargetUserCN,
         [string]$Principal
     )
-
     try {
         $User = [ADSI]"LDAP://$TargetUserCN"
         $acl = $User.psbase.ObjectSecurity
@@ -119,7 +119,6 @@ function Grant-GenericWrite {
         [string]$TargetUserCN,
         [string]$Principal
     )
-
     try {
         $user = [ADSI]"LDAP://$TargetUserCN"
         $acl = $user.psbase.ObjectSecurity
@@ -148,7 +147,6 @@ function Grant-WriteDacl {
         [string]$TargetUserCN,
         [string]$Principal
     )
-
     try {
         $user = [ADSI]"LDAP://$TargetUserCN"
         $acl = $user.psbase.ObjectSecurity
@@ -180,6 +178,70 @@ function Get-UserDN($username) {
     return $user?.DistinguishedName
 }
 
+Import-Module ActiveDirectory
+
+# -------------------------
+# Step 5: Create Users
+# -------------------------
+
+$users = @(
+    @{Name="suneo";    Password="armour@123"},
+    @{Name="doraemon"; Password="armour@123"}
+)
+
+foreach ($u in $users) {
+    $username = $u.Name
+    $password = $u.Password
+
+    # Check if user exists using -Filter as a string
+    if (-not (Get-ADUser -Filter "SamAccountName -eq '$username'" -ErrorAction SilentlyContinue)) {
+        Write-Host "Creating user $username..."
+        New-ADUser -Name $username `
+                   -SamAccountName $username `
+                   -AccountPassword (ConvertTo-SecureString $password -AsPlainText -Force) `
+                   -Enabled $true
+    } else {
+        Write-Host "User $username already exists."
+    }
+}
+
+# -------------------------
+# Step 6: Grant AllExtendedRights from suneo to doraemon
+# -------------------------
+
+$targetUser = "doraemon"
+$principalUser = "suneo"
+
+# Get DN of target user
+$targetUserDN = (Get-ADUser $targetUser).DistinguishedName
+
+# Get SID of principal user
+$principalSID = (Get-ADUser $principalUser).SID
+$identity = New-Object System.Security.Principal.SecurityIdentifier($principalSID)
+
+# Bind to target user's AD object
+$adObject = [ADSI]"LDAP://$targetUserDN"
+
+# Get current ACL
+$acl = $adObject.psbase.ObjectSecurity
+
+# Define AllExtendedRights ACL rule
+$adRights = [System.DirectoryServices.ActiveDirectoryRights]::ExtendedRight
+$accessControlType = [System.Security.AccessControl.AccessControlType]::Allow
+$inheritanceType = [System.DirectoryServices.ActiveDirectorySecurityInheritance]::None
+
+# Create and apply access rule
+$accessRule = New-Object System.DirectoryServices.ActiveDirectoryAccessRule `
+    ($identity, $adRights, $accessControlType, [Guid]::Empty, $inheritanceType)
+
+$acl.AddAccessRule($accessRule)
+
+# Commit changes to AD
+$adObject.psbase.ObjectSecurity = $acl
+$adObject.psbase.CommitChanges()
+
+Write-Host "`n✅ AllExtendedRights successfully granted to '$principalUser' on '$targetUser'"
+
 $domainAdminsDN = (Get-ADGroup "Domain Admins").DistinguishedName
 $domainDN       = (Get-ADDomain).DistinguishedName
 
@@ -189,7 +251,7 @@ $doraemonDN = Get-UserDN "doraemon"
 $sonuDN     = Get-UserDN "sonu"
 
 # -------------------------------
-# Step 5: Apply ACLs
+# Step 7: Apply ACLs
 # -------------------------------
 
 # Domain and group level ACLs
@@ -199,7 +261,7 @@ Grant-ADPermission -TargetDN $domainAdminsDN -Principal "armour\aakash"    -Acce
 Grant-ADPermission -TargetDN $domainAdminsDN -Principal "armour\himanshu"  -AccessRight "AddSelf"
 Grant-ADPermission -TargetDN $domainDN       -Principal "armour\ram"       -AccessRight "GenericAll"
 
-# User-level ACLs
+# User-level ACL
 if ($doraemonDN) {
     Grant-ADPermission -TargetDN $doraemonDN -Principal "armour\Suneo" -AccessRight "AllExtendedRights"
 }
@@ -211,4 +273,3 @@ Grant-GenericWrite        -TargetUserCN "CN=sonu,CN=Users,DC=armour,DC=local"   
 Grant-WriteDacl           -TargetUserCN "CN=sandeep,CN=Users,DC=armour,DC=local" -Principal "armour\jainam"
 
 Write-Host "`n[✔] All requested ACLs assigned successfully." -ForegroundColor Green
-
