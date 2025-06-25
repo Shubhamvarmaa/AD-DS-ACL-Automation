@@ -25,6 +25,7 @@ This project automates the installation and configuration of **Active Directory 
   - `ForceChangePassword` ➡️ Nobita and raj on Shizuka
   - `GenericWrite` ➡️ Kisan on sonu
   - `WriteDacl` ➡️ Jainam on sandeep
+  - `AllExtendedRights` ➡️ suneo on doraemon
 
 ---
 
