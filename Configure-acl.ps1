@@ -1,3 +1,21 @@
+function Show-Banner {
+    Write-Host '     _    ____ _        '
+    Write-Host '    / \  / ___| |       '
+    Write-Host '   / _ \| |   | |        '
+    Write-Host '  / ___ \ |___| |___     '
+    Write-Host ' /_/   \_\____|_____|    '
+    Write-Host ''
+    Write-Host '      _   _   _ _____ ___  __  __    _  _____ ___ ___  _   _         '
+    Write-Host '     / \ | | | |_   _/ _ \|  \/  |  / \|_   _|_ _/ _ \| \ | |        '
+    Write-Host '    / _ \| | | | | || | | | |\/| | / _ \ | |  | | | | |  \| |        '
+    Write-Host '   / ___ \ |_| | | || |_| | |  | |/ ___ \| |  | | |_| | |\  |        '
+    Write-Host '  /_/   \_\___/  |_| \___/|_|  |_/_/   \_\_| |___\___/|_| \_|        '
+    Write-Host ''
+    Write-Host ' https://github.com/shubhamvarmaa                               by @Shubham '
+}
+
+Show-Banner
+
 Import-Module ActiveDirectory
 
 # -------------------------
