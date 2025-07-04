@@ -12,7 +12,7 @@ function Show-Banner {
     Write-Host '  /_/   \_\___/  |_| \___/|_|  |_/_/   \_\_| |___\___/|_| \_|        '
     Write-Host ''
     Write-Host ' https://github.com/shubhamvarmaa                               by @Shubham '
-    Write-Host "`n`n`n"  # Two new lines for spacing
+    Write-Host "`n`n`n"  
 }
 
 # Call the banner
